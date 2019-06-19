@@ -8,7 +8,7 @@ import { perPage } from '../config';
 
 // to query items from the backend, i.e grpahql-yoga and prisma
 const ALL_ITEMS_QUERY = gql`
-    query ALL_ITEMS_QUERY($skip: Int = 0) {
+    query ALL_ITEMS_QUERY($first: Int, $skip: Int = 0) {
         items(first: $first, skip: $skip, orderBy: createdAt_DESC) {
             id
             title
@@ -37,7 +37,7 @@ class Items extends Component {
         return (
             <Center>
                 <Pagination page={this.props.page} />
-                <Query query={ALL_ITEMS_QUERY} variables={{skip:this.props.page * perPage - perPage}}>
+                <Query query={ALL_ITEMS_QUERY} variables={{skip:2, first: 4}}>
                     {({data, error, loading}) => {
                         if(loading) return <p>Loading...</p>;
                         if(error) return <p>Error: {error.message}</p>;

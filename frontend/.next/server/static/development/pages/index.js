@@ -442,7 +442,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n    query ALL_ITEMS_QUERY($skip: Int = 0) {\n        items(first: $first, skip: $skip, orderBy: createdAt_DESC) {\n            id\n            title\n            price\n            description\n            image\n            largeImage\n        }\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    query ALL_ITEMS_QUERY($first: Int, $skip: Int = 0) {\n        items(first: $first, skip: $skip, orderBy: createdAt_DESC) {\n            id\n            title\n            price\n            description\n            image\n            largeImage\n        }\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -504,7 +504,8 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_apollo__WEBPACK_IMPORTED_MODULE_1__["Query"], {
         query: ALL_ITEMS_QUERY,
         variables: {
-          skip: this.props.page * _config__WEBPACK_IMPORTED_MODULE_6__["perPage"] - _config__WEBPACK_IMPORTED_MODULE_6__["perPage"]
+          skip: 2,
+          first: 4
         },
         __source: {
           fileName: _jsxFileName,
@@ -885,29 +886,14 @@ var Home = function Home(props) {
 
 /***/ }),
 
-/***/ "./pages/products.js":
-/*!***************************!*\
-  !*** ./pages/products.js ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index */ "./pages/index.js");
-
-/* harmony default export */ __webpack_exports__["default"] = (_index__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-/***/ }),
-
 /***/ 3:
-/*!*********************************!*\
-  !*** multi ./pages/products.js ***!
-  \*********************************/
+/*!******************************!*\
+  !*** multi ./pages/index.js ***!
+  \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./pages/products.js */"./pages/products.js");
+module.exports = __webpack_require__(/*! ./pages/index.js */"./pages/index.js");
 
 
 /***/ }),
@@ -990,4 +976,4 @@ module.exports = require("styled-components");
 /***/ })
 
 /******/ });
-//# sourceMappingURL=products.js.map
+//# sourceMappingURL=index.js.map

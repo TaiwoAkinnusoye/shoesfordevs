@@ -1,11 +1,18 @@
+const cookieParser = require('cookie-parser');
 require('dotenv').config({path: 'variables.env'});
 const createServer = require('./createServer');
 const db = require('./db');
 
 const server = createServer();
 
-// Todo; use express middleware to handle cookies (JWT)
-// Todo; use express middleware to populate user
+// use express middleware to handle cookies (JWT)
+server.express.use(cookieParser());
+
+// decode the JWT so we can get the user id on each request
+server.express.use((req, res, next)=> {
+    console.log('Hey, i am a middleware');
+    next();
+});
 
 server.start({
     cors: {
