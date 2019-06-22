@@ -1,5 +1,10 @@
+// imports
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {randomBytes} = require('crypto');
+const {promisify} = require('util');
+
+// Mutation Functions for use on front-end 
 const Mutations = {
     async createItem(parent, args, ctx, info) {
     // Todo check if they are logged in
@@ -37,6 +42,7 @@ const Mutations = {
         // 3. Delete the item
         return ctx.db.mutation.deleteItem({where}, info);
     },
+    
     async signup(parent, args, ctx, info) {
         // Lowercase their email addresses
         args.email = args.email.toLowerCase();
@@ -60,6 +66,70 @@ const Mutations = {
         // return the user to the browser
         return user;
     },
+
+    async signin(parent, args, ctx, info) {
+        // 1. check if there is a user with that email
+        const user = await ctx.db.query.user({
+            where: {
+                email: args.email
+            }
+        });
+        if (!user) {
+            throw new Error(`No such user found for ${args.email}`);
+        }
+        // 2. check if theri password is correct
+        const valid = await bcrypt.compare(args.password, user.password);
+        if(!valid) {
+            throw new Error(`Invalid Password!`);
+        }
+        // 3. generate the jwt token
+        const token = jwt.sign({userId: user.id}, process.env.APP_SECRET);
+        // 4. set the cookie with the token
+        ctx.response.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 365 //One year cookie
+        })
+        // 5. return the user
+        return user;
+    },
+
+    signout(parent, args, ctx, info) {
+        ctx.response.clearCookie('token');
+        return {message: 'Good Bye!'};
+    },
+
+    async requestReset(parent, args, ctx, info) {
+        // 1. check if this is a real user
+        const user  = await ctx.db.query.user({where:{
+            email: args.email
+        }});
+        if (!user) {
+            throw new Error(`No such user found for ${args.email}`);
+        }
+        // 2. set a reset token and expiry on that user
+        const randomBytesPromisified = promisify(randomBytes);
+        const resetToken =  (await randomBytesPromisified(20)).toString('hex');
+        const resetTokenExpiry = Date.now() + 3600000; //One hour from now
+          // 2.1 take variables created above and save them to user
+          const res = await ctx.db.mutation.updateUser({
+              where : {email: args.email},
+              data : {resetToken, resetTokenExpiry}
+          });
+          console.log(res);
+          return {message: 'Thanks!'};
+        // 3.email them the reset token
+    },
+    async resetPassword(parent, args, ctx, info) {
+        // 1. confirm if passwords match
+        // 2. check if it is a legit reset token
+        // 3. check if the reset token is expired
+        // 4. hash the new password
+        // 5. save the new password to the and remove old resetToken fields
+        // 6. generate JWT
+        // 7. set the JWT cookie
+        // 8. return the new user
+        // 9. take a break 
+    }
 };
 
 module.exports = Mutations;
