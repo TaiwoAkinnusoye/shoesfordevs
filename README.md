@@ -1,2 +1,2 @@
 # shoesfordevs
-An ecommerce website made with React, Apollo, GraphQL, Prisma, SQL, Next.js
+An ecommerce application made with React, Apollo, GraphQL, Prisma, Next.js
