@@ -50,7 +50,6 @@ class UpdateItem extends Component {
     updateItem = async (event, updateItemMutaion) => {
         event.preventDefault();
         console.log('Updating Item!!');
-        console.log(this.state);
         const res = await updateItemMutaion({
             variables: {
                 id: this.props.id,

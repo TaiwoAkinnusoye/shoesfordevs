@@ -4,6 +4,7 @@ import {Query} from 'react-apollo';
 import Head from 'next/head';
 import Link from 'next/link';
 import PaginationStyles from './styles/PaginationStyles';
+import Error from './ErrorMessage';
 import {perPage} from '../config';
 
 const PAGINATION_QUERY = gql`
@@ -17,34 +18,41 @@ const PAGINATION_QUERY = gql`
 `;
 
 const Pagination = (props) => (
-    
         <Query query={PAGINATION_QUERY}>
-            {({data, loading, error}) => {
-                if (loading) return <p>Loading...</p>;
-                const page = props.page;
-                const count = data.itemsConnection.aggregate.count;
-                const pages = Math.ceil(count / perPage);
-                return  (
-                    <PaginationStyles>
-                        <Head>
-                            <title>Shoes For Devs! | {page} of {pages}</title>
-                        </Head>
-                        <Link prefetch href={{
-                            pathname: '/products', query: {page: page - 1
-                            }}}>
-                            <a className="prev" aria-disabled={page <= 1}>Prev</a>
-                        </Link>
-                        <p>Page {props.page} of {pages} </p>
-                        <p>{count} Products Total</p>
-                        <Link prefetch href={{
-                            pathname: '/products', query: {page: page + 1
-                            }}}>
-                            <a className="next" aria-disabled={page >= pages}>Next</a>
-                        </Link>
-                    </PaginationStyles>
-                );
-            }}
+        {({data, loading, error}) => {
+            if (error) return <Error error={error} />;
+            if(loading) return <p>Loading...</p>;
+            const count = data.itemsConnection.aggregate.count;
+            const pages = Math.ceil(count/perPage);
+            const page = props.page;
+            return (
+            <PaginationStyles>
+                <Head>
+                    <title>
+                        Shoes For Devs! {page} of {pages}
+                    </title>
+                </Head>
+                <Link prefetch href={{
+                    pathname: 'products',
+                    query: {page: page-1}
+                }}>
+                    <a className="prev" aria-disabled={page <= 1}>Prev</a>
+                </Link>
+                <p>    
+                    Page {props.page} of {pages} 
+                </p>    
+                <p>{count} items total</p>
+                <Link prefetch href={{
+                    pathname: 'products',
+                    query: {page: page+1}
+                }}>
+                    <a className="prev" aria-disabled={page >= pages}>Next</a>
+                </Link>
+            </PaginationStyles>
+)
+        }}
         </Query>
 );
 
 export default Pagination;
+export {PAGINATION_QUERY};

@@ -17,7 +17,7 @@ const SingleItemStyles = styled.div`
     img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain ;
     }
     .details {
         margin: 20px;
@@ -65,3 +65,4 @@ render () {
 };
 }
 export default SingleItem;
+export {SINGLE_ITEM_QUERY};

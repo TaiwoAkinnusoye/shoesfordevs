@@ -9,6 +9,20 @@ const CURRENT_USER_QUERY = gql`
             name
             email
             permissions
+            orders {
+                id
+            }
+            cart {
+            id
+            quantity
+            item {
+                id
+                price
+                title
+                description
+                image
+            }
+        }
         }
     }
 `;
@@ -19,7 +33,7 @@ const User = (props) => (
     </Query>
 );
 
-User.PropTypes = {
+User.propTypes = {
     children: PropTypes.func.isRequired
 };
 

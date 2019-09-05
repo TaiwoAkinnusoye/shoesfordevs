@@ -54,7 +54,6 @@ class CreateItem extends Component {
             body: data
         });
         const file = await res.json();
-        console.log(file);
         this.setState({
             image: file.secure_url,
             largeImage: file.eager[0].secure_url
@@ -65,13 +64,13 @@ class CreateItem extends Component {
         return (
             <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
                 {(createItem, {error, loading}) => (
-                    <Form onSubmit={async event => {
+                    <Form data-test="form" onSubmit={async event => {
                         // Stop the form from submitting
                         event.preventDefault();
                         // call the graphql mutation
                         const res = await createItem();
                         // route to the single item page
-                        console.log(res);
+                        
                         Router.push({
                             pathname: '/product',
                             query: {id: res.data.createItem.id}
