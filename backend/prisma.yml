@@ -1,8 +1,0 @@
-#endpoint: ${env:PRISMA_ENDPOINT}
-endpoint: https://shoesfordevs-prod-aeada05fa2.herokuapp.com/shoesfordevs-prodserver/prod
-
-datamodel: datamodel.prisma
-secret: ${env:PRISMA_SECRET}
-hooks:
-  post-deploy:
-    - graphql get-schema -p prisma

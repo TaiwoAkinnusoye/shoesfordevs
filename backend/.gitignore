@@ -1,7 +1,0 @@
-# ignore node modules
-node_modules
-
-#ignore variables.env
-variables.env
-
-.vscode
